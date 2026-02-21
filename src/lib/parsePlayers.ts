@@ -1,5 +1,12 @@
 import { Player } from '../types'
 
+const WEEKDAY_REGEX =
+  /^(lunes|martes|mi[eé]rcoles|jueves|viernes|s[aá]bado|domingo)(\s+\d{1,2})?$/i
+
+function isWeekdayLine(text: string): boolean {
+  return WEEKDAY_REGEX.test(text.trim())
+}
+
 function cleanLine(line: string): string {
   // Remove leading numbering: "1. " "2) " "3- " "4: "
   line = line.replace(/^\s*\d+\s*[\.\)\-:]\s*/, '')
@@ -24,10 +31,22 @@ export function parsePlayers(raw: string): Player[] {
 
   const seen = new Set<string>()
   const players: Player[] = []
+  let isFirstItem = true
 
   for (const line of lines) {
     const name = cleanLine(line)
     if (!name) continue
+
+    // "Out" corta la lista: ese item y todo lo de abajo se excluye
+    if (name.toLowerCase() === 'out') break
+
+    // Primer ítem que sea día de la semana (ej. "Martes 14") se excluye
+    if (isFirstItem && isWeekdayLine(name)) {
+      isFirstItem = false
+      continue
+    }
+    isFirstItem = false
+
     const key = name.toLowerCase()
     if (seen.has(key)) continue
     seen.add(key)

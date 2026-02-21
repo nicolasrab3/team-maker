@@ -36,18 +36,15 @@ function SortablePlayer({ player, teamColor }: { player: Player; teamColor: stri
     <div
       ref={setNodeRef}
       style={style}
-      className="flex items-center gap-2 px-3 py-2 rounded-xl bg-black/20 hover:bg-black/30 transition-colors group"
+      {...attributes}
+      {...listeners}
+      className="flex items-center gap-2 px-3 py-2 rounded-xl bg-black/20 hover:bg-black/30 transition-colors group cursor-grab active:cursor-grabbing touch-none select-none"
+      aria-label={`Arrastrar a ${player.name}`}
     >
-      {/* Handle */}
-      <button
-        {...attributes}
-        {...listeners}
-        aria-label="Arrastrar jugador"
-        className={`text-lg cursor-grab active:cursor-grabbing touch-none select-none ${teamColor} opacity-40 group-hover:opacity-70 transition-opacity`}
-      >
+      <span className={`text-lg ${teamColor} opacity-40 group-hover:opacity-70 transition-opacity`}>
         ☰
-      </button>
-      <span className="flex-1 font-body text-sm font-medium text-white/90 select-none">
+      </span>
+      <span className="flex-1 font-body text-sm font-medium text-white/90">
         {player.name}
       </span>
     </div>

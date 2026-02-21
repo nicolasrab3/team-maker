@@ -208,7 +208,7 @@ export default function App() {
         }}
       />
 
-      <div className="relative max-w-lg mx-auto px-4 py-6 space-y-5">
+      <div className="relative max-w-lg mx-auto px-5 py-6 space-y-5 sm:px-4">
         {/* Header */}
         <div className="text-center space-y-1">
           <div className="flex items-center justify-center gap-3">

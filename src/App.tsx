@@ -298,8 +298,8 @@ export default function App() {
         )}
       </div>
 
-      {/* Hidden export area – off-screen but in DOM */}
-      <div className="fixed left-[-9999px] top-0 w-[360px]" aria-hidden="true">
+      {/* Hidden export area – rendered but visually hidden */}
+      <div className="fixed opacity-0 pointer-events-none w-[360px]" aria-hidden="true">
         <ExportView players={players} />
       </div>
 

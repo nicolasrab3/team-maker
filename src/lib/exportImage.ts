@@ -10,7 +10,6 @@ function cloneForExport(node: HTMLElement): HTMLElement {
   style.position = 'fixed'
   style.top = '0'
   style.left = '0'
-  style.visibility = 'hidden'
   style.pointerEvents = 'none'
   style.zIndex = '-1'
   document.body.appendChild(clone)

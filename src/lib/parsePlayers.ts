@@ -1,10 +1,15 @@
 import { Player } from '../types'
 
-const WEEKDAY_REGEX =
-  /^(lunes|martes|mi[eé]rcoles|jueves|viernes|s[aá]bado|domingo)(\s+\d{1,2})?$/i
+const WEEKDAY = '(lunes|martes|mi[eé]rcoles|jueves|viernes|s[aá]bado|domingo)'
+const SIMPLE_WEEKDAY_REGEX = new RegExp(`^${WEEKDAY}(\\s+\\d{1,2})?$`, 'i')
+const WHATSAPP_HEADER_REGEX = new RegExp(
+  `^${WEEKDAY}(?:\\s+\\d{1,2}(?:[\\/-]\\d{1,2})?(?:[\\/-]\\d{2,4})?)?(?:\\s+\\d{1,2}:\\d{2})?(?:\\s*[-–—]\\s*.+)?$`,
+  'i'
+)
 
-function isWeekdayLine(text: string): boolean {
-  return WEEKDAY_REGEX.test(text.trim())
+function isHeaderLine(text: string): boolean {
+  const value = text.trim()
+  return SIMPLE_WEEKDAY_REGEX.test(value) || WHATSAPP_HEADER_REGEX.test(value)
 }
 
 function cleanLine(line: string): string {
@@ -40,8 +45,8 @@ export function parsePlayers(raw: string): Player[] {
     // "Out" corta la lista: ese item y todo lo de abajo se excluye
     if (name.toLowerCase() === 'out') break
 
-    // Primer ítem que sea día de la semana (ej. "Martes 14") se excluye
-    if (isFirstItem && isWeekdayLine(name)) {
+    // Primer ítem encabezado (ej. "Martes 14", "Martes 28/04 19:50 - KDT") se excluye
+    if (isFirstItem && isHeaderLine(name)) {
       isFirstItem = false
       continue
     }
